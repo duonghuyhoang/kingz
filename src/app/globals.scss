@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap");
+
+:root {
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  background: #090e16;
+}
+::selection {
+  background-color: #babad4;
+  color: inherit;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  z-index: -1;
+}
+::-webkit-scrollbar-track {
+  background-color: #eaeaea9c;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9797979c;
+  border-radius: 3px;
+}
+.item-menu-header {
+  @apply cursor-pointer hover:text-color-main duration-300;
+}
+.selected {
+  color: #7b4ae2;
+}
+.scroll-to-top {
+  svg {
+    margin-left: 6px;
+  }
+}
+.item-project {
+  @apply p-[20px] sm:p-0 hover:bg-sub-bg duration-100 max-w-[526px] w-[100%] min-h-[400px] rounded-2xl border border-color-main flex flex-col justify-center items-center;
+}
+.Toastify__toast-theme--light {
+  background: rgba(123, 74, 226, 0.05)  !important;
+  color: #FFFFFF  !important;
+}
