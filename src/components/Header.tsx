@@ -24,7 +24,6 @@ function Header() {
         <AnchorLink
           href='#home'
           offset='100'
-          passHref
           className={`item-menu-header ${
             selectedLink === "home" ? "selected" : ""
           }`}
@@ -35,7 +34,6 @@ function Header() {
         <AnchorLink
           href='#about-me'
           offset='100'
-          passHref
           className={`item-menu-header ${
             selectedLink === "about" ? "selected" : ""
           }`}
@@ -46,7 +44,6 @@ function Header() {
         <AnchorLink
           href='#skills'
           offset='100'
-          passHref
           className={`item-menu-header ${
             selectedLink === "skills" ? "selected" : ""
           }`}
@@ -57,7 +54,6 @@ function Header() {
         <AnchorLink
           href='#projects'
           offset='100'
-          passHref
           className={`item-menu-header ${
             selectedLink === "projects" ? "selected" : ""
           }`}
@@ -68,7 +64,6 @@ function Header() {
         <AnchorLink
           href='#contact'
           offset='100'
-          passHref
           className={`item-menu-header ${
             selectedLink === "contact" ? "selected" : ""
           }`}
