@@ -1,0 +1,29 @@
+export { FacebookIcon } from "./social/facebook";
+export { GitHubIcon } from "./social/github";
+export { LinkedInIcon } from "./social/linkedin";
+
+export { ChatIcon } from "./ui/chat";
+export { CopyIcon } from "./ui/copy";
+export { DownloadIcon } from "./ui/download";
+export { MailIcon } from "./ui/mail";
+export { PhoneIcon } from "./ui/phone";
+
+export { AntDesignIcon } from "./tech/ant-design";
+export { BootstrapIcon } from "./tech/bootstrap";
+export { DockerIcon } from "./tech/docker";
+export { ExpressIcon } from "./tech/express";
+export { FigmaIcon } from "./tech/figma";
+export { JavaScriptIcon } from "./tech/javascript";
+export { KubernetesIcon } from "./tech/kubernetes";
+export { LaravelIcon } from "./tech/laravel";
+export { MongoDbIcon } from "./tech/mongodb";
+export { MySqlIcon } from "./tech/mysql";
+export { NestJsIcon } from "./tech/nestjs";
+export { NextJsIcon } from "./tech/nextjs";
+export { NodeJsIcon } from "./tech/nodejs";
+export { PhpIcon } from "./tech/php";
+export { ReactIcon } from "./tech/react";
+export { RedisIcon } from "./tech/redis";
+export { SassIcon } from "./tech/sass";
+export { TailwindCssIcon } from "./tech/tailwind-css";
+export { TypeScriptIcon } from "./tech/typescript";

@@ -1,22 +1,34 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Raleway } from "next/font/google";
+import { siteConfig } from "@/config/site";
 import "./globals.scss";
 
-const inter = Raleway({ subsets: ["latin"] });
+const raleway = Raleway({
+  subsets: ["latin", "vietnamese"],
+  display: "swap",
+  variable: "--font-raleway",
+});
 
 export const metadata: Metadata = {
-  title: "KINGZ",
-  description: "Website website belongs to KingZ",
+  metadataBase: new URL(siteConfig.url),
+  title: siteConfig.name,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#090e16",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang='en'>
-      <body className={inter.className}>{children}</body>
+    <html
+      className={raleway.variable}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <body className={raleway.className}>{children}</body>
     </html>
   );
 }

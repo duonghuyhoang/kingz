@@ -2,54 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-// @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap");
-
 :root {
+  /* Channel form so Tailwind can inject alpha (`bg-background/80`). */
+  --color-background-rgb: 9 14 22;
+  --color-surface-rgb: 16 22 34;
+  --color-main-rgb: 123 74 226;
+  --color-accent-rgb: 56 214 238;
+
+  /* Resolved form, consumed by the two-tone SVG icons so the page background
+     and the icon knockouts can never drift apart. */
+  --color-background: rgb(var(--color-background-rgb));
+  --color-main: rgb(var(--color-main-rgb));
+  --color-sub-bg: rgb(var(--color-main-rgb) / 0.05);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background: var(--color-background);
+    color: #fff;
+  }
+
+  /* Respect users who have asked the OS to reduce motion. Framer Motion and the
+     3D scene check this too; this is the blanket fallback for CSS animation. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-main-rgb) / 0.4);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: rgb(var(--color-surface-rgb));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color-main-rgb) / 0.5);
+    border-radius: 999px;
+
+    &:hover {
+      background-color: rgb(var(--color-main-rgb) / 0.8);
+    }
   }
 }
 
-body {
-  background: #090e16;
-}
-::selection {
-  background-color: #babad4;
-  color: inherit;
-}
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  z-index: -1;
-}
-::-webkit-scrollbar-track {
-  background-color: #eaeaea9c;
+@layer components {
+  .glass {
+    @apply border border-white/10 bg-white/[0.16];
+  }
+
+  .glass-blur {
+    @apply border border-white/10 bg-white/[0.12] backdrop-blur-xl;
+  }
+
+  /* Brand gradient for display type. */
+  .text-gradient {
+    @apply bg-gradient-to-br from-white via-white to-color-main bg-clip-text text-transparent;
+  }
+
+  .text-gradient-brand {
+    @apply bg-gradient-to-r from-color-main via-[#a78bfa] to-accent bg-clip-text text-transparent;
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #9797979c;
-  border-radius: 3px;
+@layer utilities {
+  /* Faint film grain: kills the banding that large dark gradients produce. */
+  .noise::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Hairline grid that fades out from the top — gives the dark page a floor. */
+  .grid-backdrop {
+    background-image:
+      linear-gradient(rgb(var(--color-main-rgb) / 0.07) 1px, transparent 1px),
+      linear-gradient(
+        90deg,
+        rgb(var(--color-main-rgb) / 0.07) 1px,
+        transparent 1px
+      );
+    background-size: 64px 64px;
+    mask-image: radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      #000 40%,
+      transparent 100%
+    );
+  }
 }
-.item-menu-header {
-  @apply cursor-pointer hover:text-color-main duration-300;
-}
-.selected {
-  color: #7b4ae2;
-}
+
+/* Third-party widget override — the only style that has to reach outside our
+   own components. */
 .scroll-to-top {
+  background: rgb(var(--color-surface-rgb)) !important;
+  border: 1px solid rgb(var(--color-main-rgb) / 0.35);
+  box-shadow: 0 0px 25px rgb(var(--color-main-rgb) / 0.25) !important;
+
   svg {
     margin-left: 6px;
+    fill: var(--color-main);
   }
-}
-.item-project {
-  @apply p-[20px] sm:p-0 hover:bg-sub-bg duration-100 max-w-[526px] w-[100%] min-h-[400px] rounded-2xl border border-color-main flex flex-col justify-center items-center;
-}
-.Toastify__toast-theme--light {
-  background: rgba(123, 74, 226, 0.05)  !important;
-  color: #FFFFFF  !important;
 }
