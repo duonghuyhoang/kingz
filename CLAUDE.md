@@ -114,9 +114,13 @@ elements dropped the Skills section to **40 fps with 67 ms worst frames** while
 the hero and contact sat at 60.
 
 So `.glass` is border plus a translucent fill only. `.glass-blur` adds the blur
-and is reserved for the two large surfaces where it actually reads — the sticky
-nav and the contact panel. That is 2 blurred elements, and 60 fps throughout.
-**Do not add `backdrop-blur` to anything that repeats** (cards, tiles, badges).
+and is reserved for the sticky nav, the one surface that content scrolls under.
+That is a single blurred element, and 60 fps throughout. **Do not add
+`backdrop-blur` to anything that repeats** (cards, tiles, badges), and not to
+anything large in the page body either: the contact panel had it, and because
+`backdrop-filter` samples a backdrop that is still settling while the canvas
+mounts, the panel visibly changed colour for the first fraction of a second
+after a reload.
 
 A panel reads as frosted because of its **opacity**, not its blur. Both classes
 therefore share the same white tint, so a badge without blur still matches the
@@ -137,6 +141,13 @@ There is **one fixed canvas behind the whole page**, not one per section — a
 second WebGL context would double the GPU cost for the same effect. It reacts to
 scroll through a ref (never React state, so scrolling triggers no renders) and
 the wrapper fades it back once the hero is past.
+
+That fade is written to `style.opacity` by hand from the `scrollYProgress`
+subscription, **not** by binding a `useTransform` value to `motion.div`. Under
+framer-motion 13 that binding left the inline opacity pinned at 1 while an
+animation drifted the computed value back toward 1, so the scene stayed far
+brighter than the 0.52 it was meant to settle at. Check the *inline* style, not
+just the computed one, if this ever looks wrong again.
 
 ### What is in the scene
 

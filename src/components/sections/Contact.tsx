@@ -51,7 +51,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
       </Reveal>
 
       <Reveal delay={0.2} variant="scale" className="w-full max-w-3xl">
-        <div className="glass-blur relative mt-8 overflow-hidden rounded-3xl p-8 sm:p-12">
+        <div className="glass relative mt-8 overflow-hidden rounded-3xl p-8 sm:p-12">
           <div
             aria-hidden="true"
             className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-color-main/20 blur-3xl"

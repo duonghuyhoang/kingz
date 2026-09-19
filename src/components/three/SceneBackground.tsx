@@ -2,12 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { useReducedMotion, useScroll } from "framer-motion";
 import type { DragState } from "./Scene";
 
 const Scene = dynamic(() => import("./Scene"), { ssr: false });
@@ -55,6 +50,15 @@ function insideDragZone(event: PointerEvent) {
 
 const DRAG_SENSITIVITY = 0.005;
 
+const SCENE_OPACITY_TOP = 1;
+const SCENE_OPACITY_PAST_HERO = 0.52;
+const SCENE_FADE_PROGRESS = 0.12;
+
+function sceneOpacity(progress: number) {
+  const t = Math.min(Math.max(progress, 0) / SCENE_FADE_PROGRESS, 1);
+  return SCENE_OPACITY_TOP + (SCENE_OPACITY_PAST_HERO - SCENE_OPACITY_TOP) * t;
+}
+
 export function SceneBackground() {
   const reduceMotion = useReducedMotion();
   const [state, setState] = useState<"idle" | "ready" | "unsupported">("idle");
@@ -68,8 +72,8 @@ export function SceneBackground() {
     active: false,
   });
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.12], [1, 0.52]);
 
   useEffect(() => {
     if (!hasWebGL()) {
@@ -80,11 +84,17 @@ export function SceneBackground() {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (value) => {
+    const apply = (value: number) => {
       scrollRef.current = value;
-    });
-    return unsubscribe;
-  }, [scrollYProgress]);
+      const node = wrapperRef.current;
+      if (node) {
+        node.style.opacity = String(reduceMotion ? 0.5 : sceneOpacity(value));
+      }
+    };
+
+    apply(scrollYProgress.get());
+    return scrollYProgress.on("change", apply);
+  }, [scrollYProgress, reduceMotion]);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -148,9 +158,10 @@ export function SceneBackground() {
   }, [reduceMotion]);
 
   return (
-    <motion.div
+    <div
+      ref={wrapperRef}
       aria-hidden="true"
-      style={{ opacity: reduceMotion ? 0.5 : opacity }}
+      style={{ opacity: reduceMotion ? 0.5 : SCENE_OPACITY_TOP }}
       className="pointer-events-none fixed inset-0 -z-10"
     >
       {state === "ready" ? (
@@ -162,6 +173,6 @@ export function SceneBackground() {
       ) : (
         <SceneFallback />
       )}
-    </motion.div>
+    </div>
   );
 }
